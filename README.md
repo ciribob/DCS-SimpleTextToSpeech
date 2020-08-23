@@ -18,7 +18,7 @@ Do this without DCS running to allow mission scripts to use os functions.
 **You WILL HAVE TO REAPPLY AFTER EVERY DCS UPDATE**
 
 ### SRS Server
-SRS Server installed and running on the same machine as 
+SRS Server installed and running on the same machine as the Mission Server as the External Audio can only connect locally
 
 ## Usage:
 
