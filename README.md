@@ -5,7 +5,7 @@ Compatible with SRS version 1.9.0.2 +
 
 ## Video:
 
-<iframe src="https://clips.twitch.tv/embed?clip=ZanyApatheticNostrilCharlieBitMe" frameborder="0" allowfullscreen="true" scrolling="no" height="378" width="620"></iframe>
+https://clips.twitch.tv/embed?clip=ZanyApatheticNostrilCharlieBitMe
 
 ## Prerequisites:
 
