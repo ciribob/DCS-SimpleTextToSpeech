@@ -3,9 +3,9 @@ LUA Script adding Text to Speech (and MP3 playback) using SRS in DCS
 
 Compatible with SRS version 1.9.0.2 +
 
-## Video:
+## Video Demo & Setup:
 
-https://www.twitch.tv/ciribob/clip/ZanyApatheticNostrilCharlieBitMe
+https://www.youtube.com/watch?v=eBahvfbfMHM&
 
 ## Prerequisites:
 
