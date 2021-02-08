@@ -5,7 +5,9 @@ Compatible with SRS version 1.9.0.2 +
 
 ## Video Demo & Setup:
 
-https://www.youtube.com/watch?v=eBahvfbfMHM&
+https://www.youtube.com/watch?v=eBahvfbfMHM
+
+Working example & Demo: https://forums.eagle.ru/topic/261561-introducing-dcs-simple-text-to-speech-dcs-stts/
 
 ## Prerequisites:
 
