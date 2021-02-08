@@ -1,7 +1,7 @@
 --[[
 
 DCS-SimpleTextToSpeech
-Version 0.1
+Version 0.2
 Compatible with SRS version 1.9.0.2 +
 
 DCS Modification Required:
@@ -65,23 +65,16 @@ function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition )
 
     message = message:gsub("\"","\\\"")
 
-    local cmd = string.format("start \"%s\" \"%s\\%s\" \"%s\" %s %s %s %s \"%s\" %s", STTS.DIRECTORY, STTS.DIRECTORY, STTS.EXECUTABLE, message, freqs, modulations, coalition,STTS.SRS_PORT, name, volume )
-
+    local cmd = string.format("start /B /min \"%s\" \"%s\\%s\" \"%s\" %s %s %s %s \"%s\" %s", STTS.DIRECTORY, STTS.DIRECTORY, STTS.EXECUTABLE, message, freqs, modulations, coalition,STTS.SRS_PORT, name, volume )
+    env.info("[DCS-STTS] TextToSpeech Command :\n" .. cmd.."\n")
     os.execute(cmd)
 
 end
 
 function STTS.PlayMP3(pathToMP3,freqs,modulations, volume,name, coalition )
 
-    local cmd = string.format("start \"%s\" \"%s\\%s\" \"%s\" %s %s %s %s \"%s\" %s", STTS.DIRECTORY, STTS.DIRECTORY, STTS.EXECUTABLE, pathToMP3, freqs, modulations, coalition,STTS.SRS_PORT, name, volume )
-
+    local cmd = string.format("start /B /min \"%s\" \"%s\\%s\" \"%s\" %s %s %s %s \"%s\" %s", STTS.DIRECTORY, STTS.DIRECTORY, STTS.EXECUTABLE, pathToMP3, freqs, modulations, coalition,STTS.SRS_PORT, name, volume )
+    env.info("[DCS-STTS] MP3 Command :\n" .. cmd.."\n")
     os.execute(cmd)
 
 end
-
-
-
-
-
-
-
