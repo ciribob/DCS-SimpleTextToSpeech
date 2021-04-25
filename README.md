@@ -97,10 +97,10 @@ Arguments in order are:
  This example will say the words "Hello DCS WORLD" on 251 MHz AM at maximum volume with a client called SRS and to the Blue coalition only with the location of the transmission set to the location of a unit called "RADIO". This will respect Line of Sight and Distance Limitations if enabled
 
 
-```STTS.PlayMP3("C:\\Users\\Ciaran\\Downloads\\PR-Music.mp3","255,31","AM,FM","0.5","Multiple",0)```
+```STTS.PlayMP3("C:\\Users\\Ciaran\\Downloads\\PR-Music.ogg","255,31","AM,FM","0.5","Multiple",0)```
 
 Arguments in order are:
- - FULL path to the MP3 to play
+ - FULL path to the MP3 or Ogg audio to play
  - Frequency in MHz - to use multiple separate with a comma - Number of frequencies MUST match number of Modulations
  - Modulation - AM/FM - to use multiple
  - Volume - 1.0 max, 0.5 half
