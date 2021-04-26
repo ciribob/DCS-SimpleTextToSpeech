@@ -89,22 +89,20 @@ function STTS.round(x, n)
 end
 
 function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,point, speed,gender,culture,voice, googleTTS )
+    if os == nil or io == nil then 
+        env.info("[DCS-STTS] LUA modules os or io are sanitized. skipping. ")
+        return 
+    end
 
 	speed = speed or 1
 	gender = gender or "female"
 	culture = culture or ""
 	voice = voice or ""
 
-    -- --creating a temp file to work around the 260 character limit on os.execute
-    -- local tmpName = STTS.uuid()..".tmp"
-
-    -- local tmpFile = io.open( tmpName, "w" )
-    -- tmpFile:write(message)
-    -- tmpFile:close()
 
     message = message:gsub("\"","\\\"")
     
-    local cmd = string.format("start \"\" /d \"%s\" /b /min \"%s\" -t \"%s\" -f %s -m %s -c %s -p %s -n \"%s\" -h", STTS.DIRECTORY, STTS.EXECUTABLE, message, freqs, modulations, coalition,STTS.SRS_PORT, name )
+    local cmd = string.format("start /min \"\" /d \"%s\" /b \"%s\" -f %s -m %s -c %s -p %s -n \"%s\" -h", STTS.DIRECTORY, STTS.EXECUTABLE, freqs, modulations, coalition,STTS.SRS_PORT, name )
     
     if voice ~= "" then
     	cmd = cmd .. string.format(" -V \"%s\"",voice)
@@ -138,11 +136,20 @@ function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,poi
         lon = STTS.round(lon,4)
         alt = math.floor(alt)
 
-         cmd = cmd .. string.format(" -L %s -O %s -A %s",lat,lon,alt)        
+        cmd = cmd .. string.format(" -L %s -O %s -A %s",lat,lon,alt)        
     end
 
-    if string.len(cmd) >= 260 then
-        env.warn("[DCS-STTS] TextToSpeech Command is over the 260 character limit and MAY NOT WORK. Reduce the number of parameters or path length")
+    local inlineText = string.format(" -t \"%s\"",message)
+
+    if string.len(cmd) + string.len(inlineText) > 255 then
+        local filename = STTS.DIRECTORY .. "\\" .."tmp_" .. STTS.uuid() .. ".txt"
+        local script = io.open(filename,"w+")
+        script:write(message)
+        script:close()
+        cmd = cmd .. string.format(" -I \"%s\"",filename)
+        timer.scheduleFunction(os.remove, filename, timer.getTime() + 5) 
+    else
+        cmd = cmd .. inlineText
     end
 
     env.info("[DCS-STTS] TextToSpeech Command :\n" .. cmd.."\n")
