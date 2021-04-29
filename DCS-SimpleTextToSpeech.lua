@@ -88,6 +88,41 @@ function STTS.round(x, n)
     return x / n
 end
 
+function STTS.getSpeechTime(length,speed,isGoogle)
+    -- Function returns estimated speech time in seconds
+
+    -- Assumptions for time calc: 100 Words per min, avarage of 5 letters for english word
+    -- so 5 chars * 100wpm = 500 characters per min = 8.3 chars per second
+    -- so lengh of msg / 8.3 = number of seconds needed to read it. rounded down to 8 chars per sec
+    -- map function:  (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+    local maxRateRatio = 4 
+
+    speed = speed or 1.0
+    isGoogle = isGoogle or false
+
+    local speedFactor = 1.0
+    if isGoogle then
+        speedFactor = speed
+    else
+        if speed ~= 0 then
+            speedFactor = math.abs(speed) * (maxRateRatio - 1) / 10 + 1
+        end
+        if speed < 0 then
+            speedFactor = 1/speedFactor
+        end
+    end
+
+    local wpm = math.ceil(100 * speedFactor)
+    local cps = math.floor((wpm * 5)/60)
+
+    if type(length) == "string" then
+        length = string.len(length)
+    end
+
+    return math.ceil(length/cps)
+end
+
 function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,point, speed,gender,culture,voice, googleTTS )
     if os == nil or io == nil then 
         env.info("[DCS-STTS] LUA modules os or io are sanitized. skipping. ")
@@ -154,6 +189,8 @@ function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,poi
 
     env.info("[DCS-STTS] TextToSpeech Command :\n" .. cmd.."\n")
     os.execute(cmd)
+
+    return STTS.getSpeechTime(message,speed,googleTTS)
 
 end
 
