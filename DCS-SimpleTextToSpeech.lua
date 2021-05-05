@@ -177,12 +177,12 @@ function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,poi
     local inlineText = string.format(" -t \"%s\"",message)
 
     if string.len(cmd) + string.len(inlineText) > 255 then
-        local filename = "tmp_" .. STTS.uuid() .. ".txt"
-        local script = io.open(STTS.DIRECTORY .. "\\" .. filename,"w+")
+        local filename = os.getenv('TMP') .. "\\tmp_" .. STTS.uuid() .. ".txt"
+        local script = io.open(filename,"w+")
         script:write(message)
         script:close()
         cmd = cmd .. string.format(" -I \"%s\"",filename)
-        timer.scheduleFunction(os.remove, STTS.DIRECTORY .. "\\" .. filename, timer.getTime() + 5) 
+        timer.scheduleFunction(os.remove, os.getenv('TMP') .. "\\" .. filename, timer.getTime() + 5) 
     else
         cmd = cmd .. inlineText
     end
