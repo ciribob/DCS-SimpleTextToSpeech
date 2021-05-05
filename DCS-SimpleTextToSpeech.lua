@@ -96,7 +96,7 @@ function STTS.getSpeechTime(length,speed,isGoogle)
     -- so lengh of msg / 8.3 = number of seconds needed to read it. rounded down to 8 chars per sec
     -- map function:  (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
-    local maxRateRatio = 4 
+    local maxRateRatio = 3 
 
     speed = speed or 1.0
     isGoogle = isGoogle or false
