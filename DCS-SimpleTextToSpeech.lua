@@ -174,17 +174,15 @@ function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,poi
         cmd = cmd .. string.format(" -L %s -O %s -A %s",lat,lon,alt)        
     end
 
-    local inlineText = string.format(" -t \"%s\"",message)
+    cmd = cmd ..string.format(" -t \"%s\"",message)
 
-    if string.len(cmd) + string.len(inlineText) > 255 then
-        local filename = os.getenv('TMP') .. "\\tmp_" .. STTS.uuid() .. ".txt"
+    if string.len(cmd) > 255 then
+        local filename = os.getenv('TMP') .. "\\DCS_STTS-" .. STTS.uuid() .. ".bat"
         local script = io.open(filename,"w+")
-        script:write(message)
+        script:write(cmd .. " && exit" )
         script:close()
-        cmd = cmd .. string.format(" -I \"%s\"",filename)
-        timer.scheduleFunction(os.remove, os.getenv('TMP') .. "\\" .. filename, timer.getTime() + 5) 
-    else
-        cmd = cmd .. inlineText
+        cmd = string.format("\"%s\"",filename)
+        timer.scheduleFunction(os.remove, filename, timer.getTime() + 5) 
     end
 
     if string.len(cmd) > 255 then
