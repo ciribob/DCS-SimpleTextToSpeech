@@ -182,7 +182,7 @@ function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,poi
         script:write(cmd .. " && exit" )
         script:close()
         cmd = string.format("\"%s\"",filename)
-        timer.scheduleFunction(os.remove, filename, timer.getTime() + 5) 
+        timer.scheduleFunction(os.remove, filename, timer.getTime() + 1) 
     end
 
     if string.len(cmd) > 255 then
