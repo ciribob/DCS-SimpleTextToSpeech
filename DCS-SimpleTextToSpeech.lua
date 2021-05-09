@@ -1,7 +1,7 @@
 --[[
 
 DCS-SimpleTextToSpeech
-Version 0.3
+Version 0.4
 Compatible with SRS version 1.9.6.0 +
 
 DCS Modification Required:
