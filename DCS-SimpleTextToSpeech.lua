@@ -1,7 +1,7 @@
 --[[
 
 DCS-SimpleTextToSpeech
-Version 0.4
+Version 0.4.1
 Compatible with SRS version 1.9.6.0 +
 
 DCS Modification Required:
@@ -73,6 +73,35 @@ STTS.GOOGLE_CREDENTIALS = "C:\\Users\\Ciaran\\Downloads\\googletts.json"
 STTS.EXECUTABLE = "DCS-SR-ExternalAudio.exe"
 
 local random = math.random
+
+STTS.configuredAndInstalled = nil
+---Checks if the STTS system is setup (.exe program installed and accessible, constants set) and caches the result
+---@return boolean if true, the STTS system is configured and installed, and can be used.
+function STTS.isConfiguredAndInstalled()
+    if STTS.configuredAndInstalled ~= nil then
+        return STTS.configuredAndInstalled
+    end
+
+    STTS.configuredAndInstalled = false
+
+    if STTS.DIRECTORY and STTS.EXECUTABLE then
+        local sttsExePath = STTS.DIRECTORY .. "\\" .. STTS.EXECUTABLE
+        local sttsFile=io.open(sttsExePath,"r")
+        if sttsFile~=nil then
+            io.close(sttsFile)
+            STTS.configuredAndInstalled = true
+        end
+    end
+
+    local configuredAndInstalled = "false"
+    if STTS.configuredAndInstalled then
+        configuredAndInstalled = "true"
+    end
+    env.info(string.format("[DCS-STTS] STTS.configuredAndInstalled = %s", configuredAndInstalled))
+    
+    return STTS.configuredAndInstalled
+end
+
 function STTS.uuid()
     local template ='yxxx-xxxxxxxxxxxx'
     return string.gsub(template, '[xy]', function (c)
@@ -126,6 +155,12 @@ end
 function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,point, speed,gender,culture,voice, googleTTS )
     if os == nil or io == nil then 
         env.info("[DCS-STTS] LUA modules os or io are sanitized. skipping. ")
+        return 
+    end
+
+
+    -- check if the STTS system is setup (.exe program installed and accessible, constants set) and exit if it is not
+    if not STTS.isConfiguredAndInstalled() then
         return 
     end
 
@@ -196,6 +231,11 @@ function STTS.TextToSpeech(message,freqs,modulations, volume,name, coalition,poi
 end
 
 function STTS.PlayMP3(pathToMP3,freqs,modulations, volume,name, coalition,point )
+
+    -- check if the STTS system is setup (.exe program installed and accessible, constants set) and exit if it is not
+    if not STTS.isConfiguredAndInstalled() then
+        return
+    end
 
     local cmd = string.format("start \"\" /d \"%s\" /b /min \"%s\" -i \"%s\" -f %s -m %s -c %s -p %s -n \"%s\" -v %s -h", STTS.DIRECTORY, STTS.EXECUTABLE, pathToMP3, freqs, modulations, coalition,STTS.SRS_PORT, name, volume )
     
